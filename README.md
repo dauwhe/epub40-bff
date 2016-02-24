@@ -174,6 +174,8 @@ Here's the context itself:
 
 
 ##Ontology
+
+```
 publication
 	unique identifier
 	release identifier
@@ -211,7 +213,7 @@ publication
 						manifest
 				link
 				collection
-
+```
 
 
 
