@@ -72,6 +72,7 @@ You may have noticed that we don't have a separate "spine" and "manifest," in EP
 
 For most publications, we won't need anything else. But if you want to offer multiple versions of a publication, previews, etc. then we add a `links` array:
 
+```json
 "links": [ 
   { 
     "href": "rendition-es.json", 
