@@ -35,7 +35,7 @@ We can define a publication not as a bundle of files, but merely as the JSON obj
 
 ##Example
 
-Here's a simple example:
+Here's a simple example (we're saving the linked data for later):
 
 ```json
 {
@@ -68,9 +68,11 @@ You may have noticed that we don't have a separate "spine" and "manifest," in EP
 
 ```
 
-### Alternate renditions
+>**Note**: Filtering out the sequence from such a list can be done in one line of javascript by someone who hardly knows javascript. But it's a good example of making authoring simple, instead of optimizing for implementors. 
 
-For most publications, we won't need anything else. But if you want to offer multiple versions of a publication, previews, etc. then we add a `links` array:
+### Links and Alternate Renditions
+
+For most publications, we won't need anything else. But if you want to offer multiple versions of a publication, previews, etc. then we add a `links` array. This refers to anything outside the current document, and can include alternate renderings of the content, translations, previews, related works, etc. 
 
 ```json
 "links": [ 
@@ -88,29 +90,12 @@ For most publications, we won't need anything else. But if you want to offer mul
     "label": "Version française",
     "lang": "fr"
   },
-  { 
-    "href": "/search?q={query}", 
-    "mediaType": "text/html",
-    "linkType": "search",
-    "label": "Search this book",
-    "templated": "true"
-  },
+  
   { 
     "href": "MobyDick.epub", 
     "mediaType": "application/epub+zip",
     "linkType": "alternate",
     "label": "EPUB version"
-  },
-  { 
-    "href": "preview.json", 
-    "mediaType": "application/epub+json",
-    "linkType": "preview",
-    "label": "Preview"
-  },
-  { 
-    "href": "metadata.json", 
-    "mediaType": "application/ld+json",
-    "linkType": "metadata",
   }
 ]
 }
@@ -120,15 +105,30 @@ For most publications, we won't need anything else. But if you want to offer mul
 
 #####`alternate`
 
-The `alternate` linkType describes a different manifestation of the same publication. It may be in a different language (as the first two above) or a different format (the fourth here is a regular EPUB version of the publication). 
+The `alternate` linkType describes a different manifestation of the same publication. It may be in a different language (as the first two above) or a different format (the final example above is an EPUB "classic" version of the publication). 
 
 #####`preview`
 
 This describes a subset of the publication intended as a preview. 
 
+   { 
+    "href": "preview.json", 
+    "mediaType": "application/epub+json",
+    "linkType": "preview",
+    "label": "Preview"
+  }
+
 #####`metadata`
 
 Used for linking to an external metadata record, such as ONIX or MARC. 
+
+```json
+  { 
+    "href": "metadata.json", 
+    "mediaType": "application/ld+json",
+    "linkType": "metadata",
+  }
+```
 
 #####`sequel`
 
@@ -138,20 +138,41 @@ Link to the next publication in a series.
 
 Link to the previous publication in a series.
 
+#####`search`
+
+Points to a URL template which implements search in the publication:
+
+```json
+  { 
+    "href": "/search?q={query}", 
+    "mediaType": "text/html",
+    "linkType": "search",
+    "label": "Search this book",
+    "templated": "true"
+  }
+```
+
 #####`related`
 
 The relation to the target publication is unspecified.
 
-
-
+```json
+ { 
+    "href": "http://www.example.com/Typee/manifest.json", 
+    "mediaType": "application/ld+json",
+    "linkType": "related",
+    "label": "Typee, another novel by Herman Melville",
+  }
+```
 
 ####The Context and Linked Data
 
-We can turn this JSON into JSON-LD linked data by adding a context and a `@type`:
+We can turn this JSON into JSON-LD linked data by adding a context, an `@id`, and a `@type`:
 
 ```json
 {
   "@context": "http://idpf.org/2016/epub-bff-context.jsonld",
+  "@id": "http://www.example.com/MobyDick/"
   "@type": "http://schema.org/Book",
   "metadata": {
     "title": "Moby-Dick"...
