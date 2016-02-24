@@ -172,7 +172,7 @@ We can turn this JSON into JSON-LD linked data by adding a context, an `@id`, an
 ```json
 {
   "@context": "http://idpf.org/2016/epub-bff-context.jsonld",
-  "@id": "http://www.example.com/MobyDick/"
+  "@id": "http://www.example.com/MobyDick/",
   "@type": "http://schema.org/Book",
   "metadata": {
     "title": "Moby-Dick"...
