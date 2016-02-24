@@ -64,7 +64,7 @@ Here's a simple example (we're saving the linked data for later):
 You may have noticed that we don't have a separate "spine" and "manifest," in EPUB terms. We want to avoid as much duplication as possible, as well as the complications of @id and @idref. So we just have an array of links, which both list all the files, and determines the order of the content documents. We make the reasonable assumption that HTML files are part of the "spine", and that other files or not. You can override this with a boolean "sequence" key, if you want an image in the default sequence, or a content document out of the default sequence.
 
 ```json
-{ "href": "p001.svg, "mediaType": "image/svg+xml", "sequence": "true" }
+{ "href": "p001.svg", "mediaType": "image/svg+xml", "sequence": "true" }
 
 ```
 
