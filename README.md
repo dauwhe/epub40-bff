@@ -21,7 +21,7 @@ We can describe everything we need to know about the bundle of documents that fo
 
 2. A list of the files of the publication, along with information on their nature and sequence.
 
-3. Optional links to related files, such as alternate renditions or translations, other formats (like regular EPUB), previews, and so on. One can also link to services such as search or syndication feeds, or external metadata files.  
+3. Optional links to related files, such as alternate renditions or translations, other formats (like "classic" EPUB), previews, and so on. One can also link to services such as search or syndication feeds, or external metadata files.  
 
 ##What is a publication?
 
