@@ -173,7 +173,9 @@ Here's the context itself:
 
 
 
-##Ontology
+###Appendix: Ontology for "Classic EPUB"
+
+Just to help think about this stuff...
 
 ```
 publication
