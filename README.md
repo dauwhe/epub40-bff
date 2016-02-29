@@ -17,32 +17,33 @@ EPUB has filled that gap with the package file, which includes publication metad
 
 We can describe everything we need to know about the bundle of documents that forms a publication with a relatively simple JSON file. It consists of:
 
-1. Metadata.
+1. **metadata** about the publication as a whole.
 
-2. A list of the files of the publication, along with information on their nature and sequence.
+2. A list of the **files** of the publication, along with information on their nature and sequence.
 
-3. Optional links to related files, such as alternate renditions or translations, other formats (like "classic" EPUB), previews, and so on. One can also link to services such as search or syndication feeds, or external metadata files.  
+3. Optional **links** to related files or services, such as alternate formats, external metadata files, and search or syndication feeds.
+
+4. Optional **alternate** representations of the publication ("multiple rendition" in EPUB-speak). 
 
 
 ##Example
 
-Here's a simple example (we're saving the linked data for later):
+Here's a simple example (we'll save the linked data for later):
 
 ```json
 {
 "metadata": {
   "title": "Moby-Dick",
   "identifier": "978031600000X",
-  "language": "en-US",
-  "modified": "2015-09-29T17:00:00Z",
-  "version": "1.0"
+  "language": "en",
+  "modified": "2015-09-29T17:00:00Z"
 },
 
 "files": 
 [  
-  { "href": "c001.html", "mediaType": "text/html", "properties": "nav" },
+  { "href": "toc.html", "mediaType": "text/html", "properties": "nav" },
+  { "href": "c001.html", "mediaType": "text/html" },
   { "href": "c002.html", "mediaType": "text/html" },
-  { "href": "c003.html", "mediaType": "text/html" },
   { "href": "style.css", "mediaType": "text/css" },
   { "href": "cover.jpg", "mediaType": "image/jpeg", "properties": "cover-image" }
 ]
@@ -60,6 +61,51 @@ You may have noticed that we don't have a separate "spine" and "manifest," in EP
 ```
 
 >**Note**: Filtering out the sequence from such a list can be done in one line of javascript by someone who hardly knows javascript. But it's a good example of making authoring simple, instead of optimizing for implementors. 
+
+
+#### Even Simpler
+
+If you use the proper file extension, any program that reads this manifest should be able to determine the correct mime type of the file. 
+
+
+```json
+{
+"metadata": {
+  "title": "Moby-Dick",
+  "identifier": "978031600000X",
+  "language": "en",
+  "modified": "2015-09-29T17:00:00Z"
+},
+
+"files": 
+[  
+  { "href": "toc.html", "properties": "nav" },
+  { "href": "c001.html" },
+  { "href": "c002.html" },
+  { "href": "style.css" },
+  { "href": "cover.jpg", "properties": "cover-image" }
+]
+}
+
+>**Note**: YAML might allow even simpler authoring, and the result easily converted to JSON:
+
+```yaml
+metadata:
+  title: Moby-Dick
+  language: en
+  identifier: 9780316000000X
+  modified: "2015-09-29T17:00:00Z"
+# manifest and spine
+files:
+ - href: toc.html
+   properties: nav
+ - href: c001.html
+ - href: c002.html
+ - href: css/style.css
+ - href: cover.jpg
+   properties: cover-image
+
+```
 
 
 
