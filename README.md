@@ -87,6 +87,8 @@ If you use the proper file extension, any program that reads this manifest shoul
 ]
 }
 
+```
+
 >**Note**: YAML might allow even simpler authoring, and the result easily converted to JSON:
 
 ```yaml
