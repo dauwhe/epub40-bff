@@ -23,15 +23,6 @@ We can describe everything we need to know about the bundle of documents that fo
 
 3. Optional links to related files, such as alternate renditions or translations, other formats (like "classic" EPUB), previews, and so on. One can also link to services such as search or syndication feeds, or external metadata files.  
 
-##What is a publication?
-
-EPUB is limited because all the components of a publication must be packaged together. EPUB is unnecessarily complex because many of the extension specs try to incorporate multiple publications into the same package. 
-
-But does this make sense in a browser-friendly world? Might it be better to link than to bundle? Adopting this approach in BFF opens up some very interesting possibilities.
-
-
-We can define a publication not as a bundle of files, but merely as the JSON object that describes the relationships between the constituent documents, which could be anywhere. So instead of a multiple-rendition EPUB, we can have multiple JSON files that each describe a single rendition, but link to each other. 
-
 
 ##Example
 
@@ -70,26 +61,62 @@ You may have noticed that we don't have a separate "spine" and "manifest," in EP
 
 >**Note**: Filtering out the sequence from such a list can be done in one line of javascript by someone who hardly knows javascript. But it's a good example of making authoring simple, instead of optimizing for implementors. 
 
-### Links and Alternate Renditions
 
-For most publications, we won't need anything else. But if you want to offer multiple versions of a publication, previews, etc. then we add a `links` array. This refers to anything outside the current document, and can include alternate renderings of the content, translations, previews, related works, etc. 
+
+
+### Multiple renditions
+
+EPUB and OCF allow for alternate representations of a publication to be present in the same package. EPUB-BFF uses an `alternates` array to describe such renditions. Each alternate uses exactly the same syntax as the primary representation of the publication. Metadata in this context applies only to the particular representation, and may include what EPUB calls "rendition metadata".
+
+
+```json
+
+"alternates": [
+
+    {
+      "metadata": {
+        "layout": "reflowable",
+        "accessMode": "textual",
+        "label": "Optimized for smaller screens"
+      },
+      "files": [
+        {
+          "href": "d001.html",
+          "type": "text/html"
+        },{
+          "href": "d002.html",
+          "type": "text/html"
+        }
+      ]
+    }
+    {
+      "metadata": {
+        "media": "color, min-width: 1920px",
+        "layout": "pre-paginated",
+        "accessMode": "visual",
+        "label": "Color-optimized print replica"
+      },
+      "files": [
+        {
+          "href": "p001.html",
+          "type": "text/html"
+        },{
+          "href": "p002.html",
+          "type": "text/html"
+        }
+      ]
+    }
+  ]
+
+
+```
+
+### Links
+
+We can also link to things outside our publication, or other formats.
 
 ```json
 "links": [ 
-  { 
-    "href": "rendition-es.json", 
-    "mediaType": "application/epub+json",
-    "linkType": "alternate",
-    "label": "Spanish version",
-    "lang": "es"
-  },
-  { 
-    "href": "rendition-fr.json", 
-    "mediaType": "application/epub+json",
-    "linkType": "alternate",
-    "label": "Version française",
-    "lang": "fr"
-  },
   
   { 
     "href": "MobyDick.epub", 
@@ -101,22 +128,16 @@ For most publications, we won't need anything else. But if you want to offer mul
 }
 ```
 
+
+###Collections
+
+Collections should be described as alternate representations of the publication. More TK.
+
 ####`linkType`
 
 #####`alternate`
 
-The `alternate` linkType describes a different manifestation of the same publication. It may be in a different language (as the first two above) or a different format (the final example above is an EPUB "classic" version of the publication). 
-
-#####`preview`
-
-This describes a subset of the publication intended as a preview. 
-
-   { 
-    "href": "preview.json", 
-    "mediaType": "application/epub+json",
-    "linkType": "preview",
-    "label": "Preview"
-  }
+The `alternate` linkType describes a different manifestation of the same publication that exists outside the publication. It may be in a different language or a different format (such as "classic" EPUB). 
 
 #####`metadata`
 
@@ -200,42 +221,43 @@ Just to help think about this stuff...
 
 ```
 publication
-	unique identifier
-	release identifier
-	rendition+ (default rendition)
-		package document
-			metadata
-				type?
-					dictionary
-					education/edupub??
-						teacher-edition
-						teacher-guide
-					preview
-					distributable-object
-					index
-			manifest
-				publication resource
-					core media type resource
-						epub content document
-							xhtml content document
-								epub navigation document
-								scripted content document
-							svg content document
-							fixed layout content document
-					foreign resource
-			spine
-			collection
-				metadata
-					role
-						dictionary
-						distributable-object
-						index
-						preview
-						index-group
-						scriptable-component
-						manifest
-				link
-				collection
+  unique identifier
+  release identifier
+  rendition+ (default rendition)
+    package document
+      metadata
+        type?
+          dictionary
+          education/edupub??
+            teacher-edition
+            teacher-guide
+          preview
+          distributable-object
+          index
+      manifest
+        publication resource
+          core media type resource
+            epub content document
+              xhtml content document
+                epub navigation document
+                scripted content document
+              svg content document
+              fixed layout content document
+          foreign resource
+      spine
+        idref
+      collection
+        metadata
+          role
+            dictionary
+            distributable-object
+            index
+            preview
+            index-group
+            scriptable-component
+            manifest
+        link
+        collection
 ```
 
 
