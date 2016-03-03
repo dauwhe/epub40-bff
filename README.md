@@ -124,6 +124,22 @@ I feel this has some drawbacks:
 6. In most cases, there's no informational difference between the proposals. In this proposal, you have to merge two arrays to get the classic manifest. In my proposal, you have to filter one array to get the classic spine. In either case that's one line of code, most likely. I think the benefits to authoring and understanding outweigh other concerns.
 
 
+#### Aside: Generating a "spine" from the files array
+
+```javascript
+//create the spine from the files array
+for(var i = 0; i < json.files.length; i++) {
+// logic for what manifest files are in the spine
+  if ( json.files[i].sequence == 'true' || ((json.files[i].type=='text/html' || json.files[i].type=='application/xhtml+xml') && json.files[i].sequence !== 'false' )) {
+    var manifestItemRef = document.createElement('itemref');
+    // create ID based on filename
+    manifestItemRef.setAttribute('idref', 'a' + json.files[i].href.replace(/\.[^/.]+$/, "") );
+    spine.appendChild(manifestItemRef);
+    }
+};
+```
+
+
 #### Even Simpler
 
 If you use the proper file extension, any program that reads this manifest should be able to determine the correct mime type of the file. 
